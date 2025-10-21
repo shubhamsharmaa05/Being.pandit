@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Being.Pandit</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading screen -->
+  <div id="loading-screen">
+    <img src="loading.gif" alt="Loading...">
+  </div>
+
+  <!-- Time and Location display -->
+  <div id="time-display"></div>
+  <div id="location-display"></div>
+
+  <!-- Main portfolio content -->
+  <div id="main-content">
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-left">
+        <div class="greeting">~प्रणाम!</div>
+        
+        <h1 class="hero-title">I'm <span>शुभम शर्मा</span></h1>
+        <p class="hero-subtitle">~(सॉफ्टवेयर डेवलपर) Software Developer</p>
+
+        <!-- Biography -->
+        <div class="bio-section">
+          <h2>Biography/जीवनी</h2>
+          <p>I'm a passionate software developer who enjoys creating intuitive, high-performance applications. I love exploring new technologies, building scalable solutions, and solving complex problems. Constantly learning and experimenting, I strive to turn ideas into real, impactful projects. Curious about my work? Let's connect and build something amazing together!</p>
+          <p class="explore-link">Wanna know more about me?</p>
+          <a href="#about-section" class="link-red">Explore More</a>
+        </div>
+
+        <!-- Skills -->
+        <div class="skills-section">
+          <h2>Skills/कौशल</h2>
+          <ul>
+            <li>Frontend Development</li>
+            <li>Backend Development</li>
+            <li>Database Management</li>
+            <li><a href="#all-skills" class="link-red">...More</a></li>
+          </ul>
+        </div>
+
+        <!-- Social Links -->
+        <div class="social-section">
+  <h2>Let's Talk!</h2>
+  <div class="social-icons">
+    <a href="https://www.linkedin.com/in/shubhamsharma0710" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+    <a href="https://github.com/shubhamsharmaa05" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+    <a href="https://discord.com/channels/@me/1411845624705450027" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i></a>
+    <a href="https://www.instagram.com/shubham.sharmaa05?igsh=cDZ4MW5hNDVnMmIz" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+  </div>
+</div>
+
+        <!-- CV Button -->
+        <a href="#" class="cv-btn">~Download CV</a>
+      </div>
+
+      <!-- Hero Right (Character + Stats) -->
+      <div class="hero-right">
+        <div class="character-container">
+          <img src="1760895018288.jpg" alt="Shubham Sharma" class="character" loading="lazy" style="cursor: pointer;" onclick="window.location.href='game.html'">
+          <p class="character-status">&lt;Being.Pandit/&gt;</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+          <div class="stat-box">
+            <p class="stat-number">5+</p>
+            <p class="stat-label">PROJECTS COMPLETED</p>
+          </div>
+          <div class="stat-box">
+            <p class="stat-number">1+</p>
+            <p class="stat-label">YEARS OF EXPERIENCE</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about-section">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title"><span id="title-main">About_Me</span> <span id="title-hindi">/मेरे बारे में</span></h2>
+          <i class="fas fa-arrow-right arrow-icon" onclick="nextTab()"></i>
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="tabs-content">
+          <div id="tab-about" class="tab-content active">
+            <h3 class="tab-heading">About_Me</h3>
+            <p class="about-text">I'm a software developer with a passion for building elegant solutions to complex problems. With experience in full-stack development, I've worked on various projects ranging from web applications to backend systems. I'm constantly learning new technologies and best practices to stay updated in this ever-evolving field.</p>
+          </div>
+
+          <div id="tab-education" class="tab-content">
+            <h3 class="tab-heading">Education</h3>
+            <p class="about-text">My educational journey has been focused on building a strong foundation in computer science and technology. I completed my schooling from Seedling Public School in 2022-23, where I developed my core academic skills and passion for technology. Currently, I'm pursuing B.Tech in Computer Science and Engineering (CSE Core) from JK Lakshmipat University (JKLU), Jaipur, with an expected graduation in 2027. Throughout my academic career, I've been committed to continuous learning through hands-on projects, online courses, and staying updated with emerging technologies and industry best practices.</p>
+          </div>
+
+          <div id="tab-experience" class="tab-content">
+            <h3 class="tab-heading">Experience</h3>
+            <p class="about-text">My professional journey includes an enriching internship at MNNIT Allahabad, where I contributed to technical projects and collaborated with academic professionals, gaining valuable insights into research-driven development.
+
+Simultaneously, I've been working as a freelance developer, delivering custom web and software solutions to clients. This experience has strengthened my technical expertise, client management skills, and ability to work independently while meeting project deadlines and exceeding client expectations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+<section class="projects-section" id="projects">
+  <div class="section-container">
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+    <div class="projects-grid">
+      <!-- Project 1 -->
+      <div class="project-card">
+  <h3 class="project-title">MIMO DRA with Beam Tilting Feature</h3>
+  <p class="project-description">Designed and analyzed a Multiple-Input Multiple-Output (MIMO) Dielectric Resonator Antenna with beam tilting capabilities using Partially Reflective Surface (PRS) during summer internship at MNNIT Allahabad. Enhanced antenna performance through innovative beam steering techniques for advanced wireless communication systems.</p>
+  <div class="project-tech">
+    <span class="tech-tag">Antenna Design</span>
+    <span class="tech-tag">MIMO Systems</span>
+    <span class="tech-tag">Beam Steering</span>
+    <span class="tech-tag">RF Engineering</span>
+  </div>
+</div>
+      
+      <!-- Project 2 -->
+      <div class="project-card">
+  <h3 class="project-title">E-Commerce Platform</h3>
+  <p class="project-description">Developed a full-featured e-commerce platform with secure payment integration, user authentication, product management, and shopping cart functionality. Implemented RESTful APIs for seamless frontend-backend communication with focus on performance optimization and responsive user experience.</p>
+  <div class="project-tech">
+    <span class="tech-tag">React</span>
+    <span class="tech-tag">Node.js</span>
+    <span class="tech-tag">Express</span>
+    <span class="tech-tag">MongoDB</span>
+    <span class="tech-tag">Payment Gateway</span>
+  </div>
+</div>
+      
+      <!-- Project 3 -->
+      <div class="project-card">
+  <h3 class="project-title">Gaming Tournament Management Platform</h3>
+  <p class="project-description">Developed an intelligent tournament management system that organizes online gaming matches between teams. Features automated bracket generation based on player rank analysis, real-time match scheduling, and team performance tracking for fair and competitive gameplay experience.</p>
+  <div class="project-tech">
+    <span class="tech-tag">JavaScript</span>
+    <span class="tech-tag">Node.js</span>
+    <span class="tech-tag">MongoDB</span>
+    <span class="tech-tag">HTML/CSS</span>
+  </div>
+</div>
+    
+    <!-- More Projects Button -->
+    <div class="projects-footer">
+      <a href="#all-projects" class="more-projects-btn">View More Projects →</a>
+    </div>
+  </div>
+</section>
+
+    <!-- Skills Section -->
+    <section class="all-skills-section" id="all-skills">
+      <div class="section-container">
+        <h2 class="section-title">All <span>Skills</span></h2>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>Frontend</h3>
+            <ul>
+              <li>HTML/CSS/JavaScript</li>
+              <li>React.js</li>
+              <li>Responsive Design</li>
+            </ul>
+          </div>
+          <div class="skill-category">
+            <h3>Backend</h3>
+            <ul>
+              <li>Node.js</li>
+              <li>Express.js</li>
+              <li>Python</li>
+              <li>REST APIs</li>
+            </ul>
+          </div>
+          <div class="skill-category">
+            <h3>Database</h3>
+            <ul>
+              <li>MongoDB</li>
+              <li>PostgreSQL</li>
+              <li>MySQL</li>
+              <li>Firebase</li>
+            </ul>
+          </div>
+          <div class="skill-category">
+            <h3>Tools & Others</h3>
+            <ul>
+              <li>Git/GitHub</li>
+              <li>Docker</li>
+              <li>AWS</li>
+              <li>Linux</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+      <div class="section-container">
+        <div class="contact-content">
+          <div class="contact-left">
+            <h2 class="contact-heading">Want to start <span>a new</span></h2>
+            <h2 class="contact-heading-red">PROJECT?</h2>
+            <p class="contact-subtext">Or just say hello.</p>
+            <p class="contact-tagline">Trying to create together!</p>
+            <a href="#contact-form" class="connect-btn">.Let's Connect!</a>
+          </div>
+          
+          <div class="contact-right" id="contact-form">
+  <form action="https://formspree.io/f/xeorwnel" method="POST" class="contact-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" required></textarea>
+    </div>
+    <button type="submit" class="submit-btn">Let's Go!</button>
+    <p id="success-message" style="display:none; color:green; margin-top:10px;">
+      Message sent! Thank you.
+    </p>
+  </form>
+</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-left">
+      <div class="footer-logo">&lt;Being.Pandit/&gt;</div>
+      <p class="footer-copyright">© 2025. being.pandit</p>
+    </div>
+    
+    <div class="footer-right">
+      <ul class="footer-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about-section">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      
+      <div class="footer-social">
+  <a href="https://www.linkedin.com/in/shubhamsharma0710" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+  <a href="https://github.com/shubhamsharmaa05" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+  <a href="https://discord.com/channels/@me/1411845624705450027" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i></a>
+  <a href="https://www.instagram.com/shubham.sharmaa05?igsh=cDZ4MW5hNDVnMmIz" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+</div>
+    </div>
+  </div>
+  
+</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

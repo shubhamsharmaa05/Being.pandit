@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino Runner - MongoDB Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            color: #fff;
+        }
+        #gameContainer {
+            background: #000;
+            box-shadow: 0 0 30px #FF6B6B;
+            padding: 20px;
+            border-radius: 8px;
+            border: 3px solid #FF6B6B;
+            position: relative;
+        }
+        canvas {
+            border: 2px solid #FF6B6B;
+            display: block;
+            background: #1a1a1a;
+        }
+        #score {
+            font-size: 24px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #FF6B6B;
+            text-shadow: 0 0 10px #FF6B6B;
+        }
+        #gameOver {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 20px;
+            color: #FF6B6B;
+            font-weight: bold;
+            text-shadow: 0 0 15px #FF6B6B;
+            min-height: 25px;
+        }
+        #instructions {
+            text-align: center;
+            margin: 10px 0;
+            color: #FF6B6B;
+            font-size: 14px;
+        }
+        #nameModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        #nameModal.hidden {
+            display: none;
+        }
+        #nameForm {
+            background: #000;
+            padding: 40px;
+            border-radius: 10px;
+            border: 3px solid #FF6B6B;
+            box-shadow: 0 0 40px #FF6B6B;
+            text-align: center;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        #nameForm h2 {
+            color: #FF6B6B;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-shadow: 0 0 10px #FF6B6B;
+        }
+        #nameForm input {
+            padding: 12px 20px;
+            font-size: 18px;
+            border: 2px solid #FF6B6B;
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 5px;
+            width: 300px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        #nameForm input:focus {
+            outline: none;
+            box-shadow: 0 0 15px #FF6B6B;
+            border-color: #ff8888;
+        }
+        #nameForm button {
+            padding: 12px 40px;
+            font-size: 18px;
+            background: #FF6B6B;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        #nameForm button:hover {
+            background: #ff8888;
+            box-shadow: 0 0 20px #FF6B6B;
+            transform: scale(1.05);
+        }
+        #nameForm button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        #leaderboard {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 600px;
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            border: 3px solid #FF6B6B;
+            box-shadow: 0 0 30px #FF6B6B;
+        }
+        #leaderboard h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #FF6B6B;
+            text-shadow: 0 0 10px #FF6B6B;
+        }
+        #leaderboard ol {
+            list-style-position: inside;
+            padding: 0;
+        }
+        #leaderboard li {
+            padding: 12px;
+            margin: 8px 0;
+            background: #1a1a1a;
+            border-radius: 4px;
+            font-size: 18px;
+            border: 1px solid #FF6B6B;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        #leaderboard li:hover {
+            background: #2a1a1a;
+            transform: translateX(5px);
+        }
+        #leaderboard li:nth-child(1) { 
+            background: linear-gradient(135deg, #FF6B6B 0%, #ff8888 100%);
+            font-weight: bold;
+            box-shadow: 0 0 15px #FF6B6B;
+            color: #000;
+            font-size: 20px;
+        }
+        #leaderboard li:nth-child(1):hover {
+            background: linear-gradient(135deg, #ff8888 0%, #ffaaaa 100%);
+        }
+        #leaderboard li:nth-child(2) { 
+            background: linear-gradient(135deg, #660000 0%, #4d0000 100%);
+            font-weight: bold;
+        }
+        #leaderboard li:nth-child(3) { 
+            background: linear-gradient(135deg, #330000 0%, #1a0000 100%);
+            font-weight: bold;
+        }
+        .player-name {
+            color: #FF6B6B;
+            font-weight: bold;
+        }
+        #leaderboard li:nth-child(1) .player-name {
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
+        }
+        #leaderboard li:nth-child(2) .player-name {
+            color: #cccccc;
+        }
+        #leaderboard li:nth-child(3) .player-name {
+            color: #cd7f32;
+        }
+        #backButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: #FF6B6B;
+            color: #000;
+            border: 2px solid #FF6B6B;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px #FF6B6B;
+            z-index: 100;
+        }
+        #backButton:hover {
+            background: #ff8888;
+            box-shadow: 0 0 25px #FF6B6B;
+            transform: translateY(-2px);
+        }
+        .status-message {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
+            min-height: 20px;
+            transition: all 0.3s;
+        }
+        .loading {
+            color: #FF6B6B;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .error {
+            color: #ff3333;
+            font-weight: bold;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .score-date {
+            opacity: 0.6;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        #connectionStatus {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 100;
+            border: 2px solid;
+        }
+        #connectionStatus.connected {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        #connectionStatus.disconnected {
+            background: rgba(255, 51, 51, 0.2);
+            border-color: #ff3333;
+            color: #ff3333;
+        }
+        .highlight-score {
+            animation: highlightNew 2s ease-in-out;
+        }
+        @keyframes highlightNew {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px #FF6B6B; }
+        }
+    </style>
+</head>
+<body>
+    <button id="backButton" onclick="window.location.href='being.pandit.html'">← Back to Portfolio</button>
+    
+    <div id="connectionStatus" class="disconnected">⚫ Checking...</div>
+    
+    <div id="nameModal">
+        <div id="nameForm">
+            <h2>🎮 Enter Your Name</h2>
+            <input type="text" id="playerNameInput" placeholder="Your Name" maxlength="20" autofocus>
+            <br>
+            <button id="startBtn" onclick="startGame()">START GAME</button>
+            <div id="nameError" class="status-message"></div>
+        </div>
+    </div>
+
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="200"></canvas>
+        <div id="score">Score: 0</div>
+        <div id="gameOver"></div>
+        <div id="instructions">Press SPACEBAR to jump | Press SPACEBAR to restart after game over</div>
+    </div>
+    
+    <div id="leaderboard">
+        <h2>🏆 Top 10 High Scores</h2>
+        <ol id="scoreList"></ol>
+        <div id="leaderboardStatus" class="status-message"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const gameOverEl = document.getElementById('gameOver');
+        const scoreListEl = document.getElementById('scoreList');
+        const nameModal = document.getElementById('nameModal');
+        const playerNameInput = document.getElementById('playerNameInput');
+        const startBtn = document.getElementById('startBtn');
+        const nameError = document.getElementById('nameError');
+        const leaderboardStatus = document.getElementById('leaderboardStatus');
+        const connectionStatus = document.getElementById('connectionStatus');
+
+        // API Configuration
+        const API_URL = 'http://localhost:3000/api';
+        let serverConnected = false;
+
+        let currentPlayerName = '';
+
+        // Game state
+        let gameRunning = false;
+        let gameOver = false;
+        let score = 0;
+        let frameCount = 0;
+
+        // Player
+        const player = {
+            x: 50,
+            y: 150,
+            width: 40,
+            height: 50,
+            velocityY: 0,
+            jumping: false,
+            gravity: 0.6,
+            jumpPower: -12
+        };
+
+        // Load player image
+        const playerImg = new Image();
+        playerImg.src = 'yo.jpg';
+        let imageLoaded = false;
+        playerImg.onload = () => {
+            imageLoaded = true;
+        };
+        playerImg.onerror = () => {
+            console.log('Player image not found, using default sprite');
+            imageLoaded = false;
+        };
+
+        // Ground
+        const ground = {
+            y: 200,
+            height: 2
+        };
+
+        // Obstacles
+        let obstacles = [];
+        const obstacleSpeed = 5;
+        let obstacleSpawnTimer = 0;
+        const obstacleSpawnInterval = 100;
+
+        // Check server connection
+        async function checkServerConnection() {
+            try {
+                const response = await fetch(`${API_URL}/health`, { 
+                    method: 'GET',
+                    signal: AbortSignal.timeout(3000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    serverConnected = data.mongodb === 'Connected';
+                    updateConnectionStatus(true);
+                    return true;
+                }
+            } catch (error) {
+                console.error('Server connection failed:', error);
+                serverConnected = false;
+                updateConnectionStatus(false);
+                return false;
+            }
+        }
+
+        // Update connection status indicator
+        function updateConnectionStatus(connected) {
+            if (connected) {
+                connectionStatus.textContent = '🟢 Connected';
+                connectionStatus.className = 'connected';
+            } else {
+                connectionStatus.textContent = '🔴 Offline';
+                connectionStatus.className = 'disconnected';
+            }
+        }
+
+        // Fetch leaderboard from server
+        async function fetchLeaderboard() {
+            try {
+                leaderboardStatus.textContent = 'Loading leaderboard...';
+                leaderboardStatus.className = 'status-message loading';
+                
+                const response = await fetch(`${API_URL}/scores`, {
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch scores');
+                
+                const scores = await response.json();
+                displayLeaderboard(scores);
+                
+                leaderboardStatus.textContent = '✓ Leaderboard updated';
+                leaderboardStatus.className = 'status-message success';
+                setTimeout(() => {
+                    leaderboardStatus.textContent = '';
+                }, 3000);
+                
+                return scores;
+            } catch (error) {
+                console.error('Error fetching leaderboard:', error);
+                leaderboardStatus.textContent = '⚠️ Could not load leaderboard. Make sure server is running on http://localhost:3000';
+                leaderboardStatus.className = 'status-message error';
+                displayLeaderboard([]);
+                return [];
+            }
+        }
+
+        // Save score to server
+        async function saveScore(name, scoreValue) {
+            try {
+                leaderboardStatus.textContent = 'Saving score...';
+                leaderboardStatus.className = 'status-message loading';
+                
+                const response = await fetch(`${API_URL}/scores`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        name: name.trim(), 
+                        score: scoreValue 
+                    }),
+                    signal: AbortSignal.timeout(5000)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to save score');
+                }
+                
+                const data = await response.json();
+                displayLeaderboard(data.scores);
+                
+                leaderboardStatus.textContent = '✓ Score saved to database!';
+                leaderboardStatus.className = 'status-message success';
+                setTimeout(() => {
+                    leaderboardStatus.textContent = '';
+                }, 3000);
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving score:', error);
+                leaderboardStatus.textContent = '⚠️ Could not save score. Server may be offline.';
+                leaderboardStatus.className = 'status-message error';
+                
+                // Show score locally even if save failed
+                const localEntry = { name: name, score: scoreValue, date: new Date() };
+                const tempScores = [localEntry];
+                displayLeaderboard(tempScores);
+                
+                return false;
+            }
+        }
+
+        // Display leaderboard
+        function displayLeaderboard(scores) {
+            scoreListEl.innerHTML = '';
+            
+            if (!scores || scores.length === 0) {
+                scoreListEl.innerHTML = '<li style="background: transparent; text-align: center; color: #666; border: none;">No scores yet. Be the first to play!</li>';
+                return;
+            }
+
+            scores.forEach((entry, i) => {
+                const li = document.createElement('li');
+                
+                // Format date
+                let dateStr = '';
+                try {
+                    const date = new Date(entry.date);
+                    dateStr = date.toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                } catch (e) {
+                    dateStr = 'Today';
+                }
+                
+                // Add medal emoji for top 3
+                const medals = ['🥇', '🥈', '🥉'];
+                const medal = i < 3 ? medals[i] + ' ' : '';
+                
+                li.innerHTML = `
+                    ${medal}<span class="player-name">${entry.name}</span> - 
+                    <strong>${entry.score}</strong> points
+                    <span class="score-date">${dateStr}</span>
+                `;
+                
+                // Highlight if it's the current player's latest score
+                if (entry.name === currentPlayerName && i === scores.findIndex(s => s.name === currentPlayerName)) {
+                    li.classList.add('highlight-score');
+                }
+                
+                scoreListEl.appendChild(li);
+            });
+        }
+
+        // Start game function
+        async function startGame() {
+            const name = playerNameInput.value.trim();
+            
+            if (name === '') {
+                nameError.textContent = '⚠️ Please enter your name!';
+                nameError.className = 'status-message error';
+                return;
+            }
+            
+            if (name.length < 2) {
+                nameError.textContent = '⚠️ Name must be at least 2 characters!';
+                nameError.className = 'status-message error';
+                return;
+            }
+            
+            currentPlayerName = name;
+            nameError.textContent = '';
+            nameModal.classList.add('hidden');
+            resetGame();
+        }
+
+        // Allow Enter key to submit
+        playerNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                startGame();
+            }
+        });
+
+        // Clear error on input
+        playerNameInput.addEventListener('input', () => {
+            nameError.textContent = '';
+        });
+
+        // Draw player
+        function drawPlayer() {
+            if (imageLoaded) {
+                try {
+                    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+                } catch (e) {
+                    imageLoaded = false;
+                    drawDefaultPlayer();
+                }
+            } else {
+                drawDefaultPlayer();
+            }
+        }
+
+        // Draw default player sprite
+        function drawDefaultPlayer() {
+            // Body
+            ctx.fillStyle = '#FF6B6B';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            // Head
+            ctx.fillRect(player.x + 25, player.y - 15, 20, 20);
+            
+            // Eye
+            ctx.fillStyle = '#000';
+            ctx.fillRect(player.x + 35, player.y - 10, 5, 5);
+            
+            // Legs (animated)
+            ctx.fillStyle = '#FF6B6B';
+            const legOffset = Math.floor(frameCount / 10) % 2 === 0 ? 0 : 10;
+            ctx.fillRect(player.x + 5 + legOffset, player.y + player.height, 8, 10);
+            ctx.fillRect(player.x + 25 - legOffset, player.y + player.height, 8, 10);
+        }
+
+        // Draw ground
+        function drawGround() {
+            ctx.fillStyle = '#FF6B6B';
+            ctx.fillRect(0, ground.y, canvas.width, ground.height);
+        }
+
+        // Draw obstacles
+        function drawObstacles() {
+            ctx.fillStyle = '#FF6B6B';
+            obstacles.forEach(obs => {
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+            });
+        }
+
+        // Update player physics
+        function updatePlayer() {
+            player.velocityY += player.gravity;
+            player.y += player.velocityY;
+
+            if (player.y >= 150) {
+                player.y = 150;
+                player.velocityY = 0;
+                player.jumping = false;
+            }
+        }
+
+        // Jump function
+        function jump() {
+            if (!player.jumping && gameRunning) {
+                player.velocityY = player.jumpPower;
+                player.jumping = true;
+            }
+        }
+
+        // Update obstacles
+        function updateObstacles() {
+            obstacles.forEach(obs => {
+                obs.x -= obstacleSpeed;
+            });
+
+            obstacles = obstacles.filter(obs => obs.x + obs.width > 0);
+
+            obstacleSpawnTimer++;
+            if (obstacleSpawnTimer >= obstacleSpawnInterval) {
+                spawnObstacle();
+                obstacleSpawnTimer = 0;
+            }
+        }
+
+        // Spawn obstacle
+        function spawnObstacle() {
+            const height = 30 + Math.random() * 30;
+            obstacles.push({
+                x: canvas.width,
+                y: ground.y - height,
+                width: 20,
+                height: height
+            });
+        }
+
+        // Check collision
+        function checkCollision() {
+            for (let obs of obstacles) {
+                if (player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.height > obs.y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Update score
+        function updateScore() {
+            if (gameRunning) {
+                frameCount++;
+                if (frameCount % 10 === 0) {
+                    score++;
+                    scoreEl.textContent = `Score: ${score}`;
+                }
+            }
+        }
+
+        // End game
+        async function endGame() {
+            gameRunning = false;
+            gameOver = true;
+            gameOverEl.textContent = `💀 GAME OVER! Final Score: ${score}`;
+            
+            // Save score to MongoDB
+            if (serverConnected) {
+                await saveScore(currentPlayerName, score);
+            } else {
+                leaderboardStatus.textContent = '⚠️ Server offline - score not saved';
+                leaderboardStatus.className = 'status-message error';
+                
+                // Show score locally
+                const localEntry = { name: currentPlayerName, score: score, date: new Date() };
+                displayLeaderboard([localEntry]);
+            }
+        }
+
+        // Reset game
+        function resetGame() {
+            gameRunning = true;
+            gameOver = false;
+            score = 0;
+            frameCount = 0;
+            obstacles = [];
+            obstacleSpawnTimer = 0;
+            player.y = 150;
+            player.velocityY = 0;
+            player.jumping = false;
+            scoreEl.textContent = 'Score: 0';
+            gameOverEl.textContent = '';
+        }
+
+        // Game loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawGround();
+            drawPlayer();
+            drawObstacles();
+
+            if (gameRunning) {
+                updatePlayer();
+                updateObstacles();
+                updateScore();
+
+                if (checkCollision()) {
+                    endGame();
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (gameOver) {
+                    // Ask for name again for new game
+                    playerNameInput.value = '';
+                    nameModal.classList.remove('hidden');
+                    playerNameInput.focus();
+                } else if (gameRunning) {
+                    jump();
+                }
+            }
+        });
+
+        // Prevent spacebar from scrolling page
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && e.target === document.body) {
+                e.preventDefault();
+            }
+        });
+
+        // Initialize game
+        async function init() {
+            console.log('🎮 Initializing Dino Runner...');
+            
+            // Check server connection
+            await checkServerConnection();
+            
+            // Load leaderboard
+            await fetchLeaderboard();
+            
+            // Start game loop
+            gameLoop();
+            
+            // Periodically check connection (every 30 seconds)
+            setInterval(checkServerConnection, 30000);
+            
+            console.log('✅ Game initialized!');
+        }
+
+        // Start when page loads
+        init();
+    </script>
+</body>
+</html>

@@ -18,11 +18,11 @@ async function getLocationAndContinent() {
       const lon = position.coords.longitude;
 
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
       );
       const data = await response.json();
-      const country = data.address.country || "Unknown";
-      const continent = getContinent(data.address.country_code);
+      const country = data.countryName || "Unknown";
+      const continent = data.continent || "Unknown";
       
       const locationDisplay = document.getElementById("location-display");
       locationDisplay.textContent = `${continent} • ${country}`;

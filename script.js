@@ -115,7 +115,7 @@ updateTime();
 // Get location on load
 getLocationAndContinent();
 
-// Loader: wait 5 seconds before showing main content
+// Loader: wait 2 seconds before showing main content
 setTimeout(() => {
   const loader = document.getElementById("loading-screen");
   const content = document.getElementById("main-content");
@@ -130,7 +130,7 @@ setTimeout(() => {
       updateTab();
     }, 100);
   }, 500);
-}, 5000);
+}, 2000);
 
 // ===== Formspree Form Submission =====
 const form = document.querySelector('.contact-form');

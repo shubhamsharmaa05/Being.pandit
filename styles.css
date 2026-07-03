@@ -12,7 +12,7 @@ html {
 
 html, body {
   font-family: "Space Mono", monospace;
-  background-color: #0f0f0f;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   color: #e0e0e0;
   overflow-x: hidden;
 }
@@ -112,13 +112,16 @@ html, body {
 
 .greeting {
   display: inline-block;
-  border: 2px solid #FF6B6B;
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  background: rgba(255, 107, 107, 0.1);
+  backdrop-filter: blur(5px);
   border-radius: 50px;
   padding: 10px 25px;
   color: #FF6B6B;
   font-size: 0.95rem;
   margin-bottom: 30px;
   font-weight: 600;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.15);
 }
 
 .hero-title {
@@ -234,17 +237,25 @@ html, body {
 
 .social-icons a {
   color: #aaa;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-icons a:hover {
-  color: #FF6B6B;
+  color: #000;
+  background-color: #FF6B6B;
+  border-color: #FF6B6B;
   transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
 }
 
 /* CV Button */
@@ -260,11 +271,14 @@ html, body {
   font-size: 0.95rem;
   cursor: pointer;
   margin-top: 10px;
+  background: transparent;
 }
 
 .cv-btn:hover {
-  background-color: rgba(255, 107, 107, 0.1);
+  background-color: #FF6B6B;
+  color: #000;
   transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
 }
 
 /* Hero Right */
@@ -445,19 +459,20 @@ html, body {
 }
 
 .project-card {
-  border: 2px solid #333;
-  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
   padding: 30px;
-  background: rgba(255, 107, 107, 0.05);
-  transition: all 0.3s ease;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
 }
 
 .project-card:hover {
   border-color: #FF6B6B;
   transform: translateY(-10px);
-  background: rgba(255, 107, 107, 0.1);
-  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.1);
+  background: rgba(30, 30, 30, 0.8);
+  box-shadow: 0 15px 35px rgba(255, 107, 107, 0.15);
 }
 
 .project-title {
@@ -480,12 +495,19 @@ html, body {
 }
 
 .tech-tag {
-  background-color: rgba(255, 107, 107, 0.2);
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
   color: #FF6B6B;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: #FF6B6B;
 }
 
 /* All Skills Section */
@@ -515,18 +537,20 @@ html, body {
 }
 
 .skill-category {
-  background: rgba(255, 107, 107, 0.05);
-  border: 2px solid #333;
-  border-radius: 10px;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
   padding: 30px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   width: 100%;
 }
 
 .skill-category:hover {
   border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.1);
-  transform: translateY(-5px);
+  background: rgba(30, 30, 30, 0.8);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(255, 107, 107, 0.15);
 }
 
 .skill-category h3 {
@@ -716,16 +740,17 @@ html, body {
 }
 
 .contact-form {
-  background: rgba(255, 107, 107, 0.05);
-  border: 2px solid #333;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   padding: 40px;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .contact-form:hover {
   border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.08);
+  box-shadow: 0 15px 35px rgba(255, 107, 107, 0.1);
 }
 
 .form-row {
